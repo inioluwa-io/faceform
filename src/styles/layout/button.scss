@@ -1,0 +1,83 @@
+.btn {
+    outline: none;
+    color: #fff;
+    text-transform: uppercase;
+    font-family: montserrat;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: background .35s ease, border .35s ease, color .35s ease;
+    cursor: pointer;
+    background: transparent;
+
+    &.btn-sm {
+        padding: 7px 14px;
+        font-family: 'Nunito Sans';
+        text-transform: initial;
+        font-size: 13px;
+        font-weight: 400;
+        border-radius: 4px;
+
+        &.btn-dark {
+            &::after {
+                border-radius: 5px;
+            }
+        }
+    }
+
+    &.btn-md {
+        padding: 10px 23px;
+    }
+
+    &.btn-lg {
+        padding: 14px 27px;
+    }
+
+    &.btn-rounded {
+        border-radius: 25px;
+    }
+
+    &.btn-primary {
+        background: $green;
+        border: 1px solid transparent;
+
+        &:hover {
+            background: $deep-green;
+        }
+    }
+
+    &.btn-default {
+        background: rgba(123, 226, 192, 0.4);
+        color: #4ca76a;
+        border: 1px solid rgba(97, 199, 131, .6);
+
+        &:hover {
+            background: rgba(123, 226, 192, 0.7);
+        }
+    }
+
+    &.btn-dark {
+        background: $black;
+        border: 1px solid transparent;
+        position: relative;
+
+        &::after {
+            position: absolute;
+            content: "";
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid $black;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            padding: 0px;
+            transition: all .35s ease;
+        }
+
+        &:hover {
+            &::after {
+                padding: 3px;
+            }
+        }
+    }
+}

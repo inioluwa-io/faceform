@@ -1,0 +1,47 @@
+#dashboard {
+    display: grid;
+    grid-template-areas: "header header""navbar workspace";
+    grid-template-columns: 4rem 1fr;
+    grid-template-rows: 4rem 1fr;
+    height: 100%;
+    position: relative;
+
+    #change_theme {
+        position: absolute;
+        top: 30px;
+        right: 50px;
+        color: #555;
+        padding: 6px 10px;
+        font-size: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Nunito Sans';
+        border-radius: 3px;
+        background: #fff;
+        box-shadow: 0 0 5px rgba(100, 100, 100, .35);
+
+        svg {
+            margin-right: 0px;
+        }
+    }
+}
+
+#template-list {
+    grid-area: workspace;
+    display: grid;
+    grid-template-columns: 0.8fr 1fr;
+    overflow: hidden;
+    position: relative;
+
+    .container {
+        ul {
+            margin: 15px;
+        }
+    }
+
+    .create {
+        border-right: 1px solid#eee;
+    }
+
+}

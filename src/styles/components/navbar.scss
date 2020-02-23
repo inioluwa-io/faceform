@@ -1,0 +1,61 @@
+nav {
+    grid-area: navbar;
+    border-right: 1px solid #eee;
+    position: fixed;
+    width: 4rem;
+    height: 100%;
+    left: 0;
+    top: 4rem;
+
+    ul {
+        width: 100%;
+        margin: 20px 0;
+
+        li {
+            margin: 9px 0;
+
+            a {
+                margin: auto;
+                display: block;
+                width: 20px;
+                height: 20px;
+                position: relative;
+                text-align: center;
+                padding: 10px;
+                border-radius: 5px;
+                transition: all .35s ease;
+
+                svg {
+                    top: 50%;
+                    position: absolute;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+
+                    path {
+                        transition: all .35s ease;
+                    }
+                }
+
+                &:hover,
+                &.active {
+                    background: #eee;
+
+                    svg path {
+                        fill: #222 !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+header.main-header {
+    border-bottom: 1px solid #eee;
+    grid-area: header;
+    position: fixed;
+    left: 0;
+    height: 4rem;
+    top: 0;
+    z-index: 99;
+    background: #fff;
+}

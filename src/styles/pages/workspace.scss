@@ -1,0 +1,16 @@
+#workspace {
+    display: grid;
+    grid-template-areas: "header""workspace";
+    grid-template-columns: 1fr;
+    grid-template-rows: 4rem 1fr;
+    min-height: 100%;
+    position: relative;
+    background: #fafafa;
+
+    main {
+        grid-area: workspace;
+        margin: 30px;
+        font-family: 'Nunito Sans';
+        font-size: .8rem;
+    }
+}

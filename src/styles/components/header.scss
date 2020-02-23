@@ -1,0 +1,60 @@
+.main-header {
+    display: grid;
+    padding: 0 25px;
+    width: calc(100% - 50px);
+    grid-template-areas: "logo . user";
+
+    #logo {
+        grid-area: logo / logo / logo;
+        align-items: center;
+
+        a {
+            text-decoration: none;
+            color: #444;
+        }
+    }
+
+    .usr-profile {
+        grid-area: user / user / user;
+        align-items: center;
+        justify-content: flex-end;
+
+        ul {
+            align-items: center;
+        }
+
+        li {
+            display: inline-flex;
+            padding: 0 15px;
+            border-right: 1px solid #ddd;
+
+            &:last-child {
+                padding-right: 0;
+                border-right: none;
+            }
+
+            &:first-child {
+                padding-left: 0;
+            }
+
+            #logout-btn {
+                margin-right: 15px;
+            }
+
+            .profile-pic {
+                width: 30px;
+                height: 30px;
+                border-right: 50px;
+                border-radius: 50px;
+                position: relative;
+                overflow: hidden;
+
+                img {
+                    position: absolute;
+                    width: 30px;
+                    min-height: 30px;
+                }
+            }
+        }
+    }
+}

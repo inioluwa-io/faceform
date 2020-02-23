@@ -1,0 +1,41 @@
+@import "../utils/variables.scss";
+
+.spinner {
+    position: fixed;
+    width: calc(100% - 14.5rem);
+    left: 14.5rem;
+    height: 100%;
+    top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: lighten($deep-black, 5);
+
+    svg {
+        animation: spin 1s infinite linear;
+    }
+}
+
+@media only screen and (max-width:1125px) {
+    .spinner {
+        width: calc(100% - 4.5rem);
+        left: 4.5rem;
+    }
+}
+
+@media only screen and (max-width:768px) {
+    .spinner {
+        width: calc(100%);
+        left: 0;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(350deg);
+    }
+}

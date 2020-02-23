@@ -1,0 +1,54 @@
+@import "../utils/variables.scss";
+
+html {
+    overflow: hidden;
+}
+
+#loader {
+    display: flex;
+    padding: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    z-index: 9999;
+    transition: opacity .2s ease-in-out;
+
+    #logo {
+        position: relative;
+        transform: translateX(-13px);
+
+        p {
+            font-family: montserrat;
+            font-size: 2.5rem;
+            font-weight: bold;
+            position: relative;
+            letter-spacing: 0.7px;
+
+            &::after {
+                position: absolute;
+                content: "";
+                height: 20px;
+                width: 100%;
+                left: 0;
+                bottom: 0;
+                z-index: -1;
+            }
+        }
+
+        span {
+            text-align: right;
+            position: absolute;
+            bottom: -5px;
+            font-size: 14px;
+            font-weight: lighter;
+            right: -31px;
+            font-family: 'Nunito sans';
+        }
+    }
+
+}

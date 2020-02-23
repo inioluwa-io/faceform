@@ -1,0 +1,125 @@
+#faceform_container {
+    width: 100%;
+    height: 100%;
+
+    .badge {
+        position: absolute;
+        bottom: 30px;
+        right: 53px;
+        color: #fff;
+        background: #444;
+        padding: 4px 15px;
+        font-size: 13px;
+        border-radius: 4px;
+    }
+
+    .faceform_carousel {
+        width: 100%;
+        height: 100%;
+        height: 50%;
+        top: 20%;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .pagination {
+        position: relative;
+        top: 81px;
+        display: flex;
+        align-items: center;
+        font-family: 'Nunito Sans';
+        left: 30px;
+    }
+
+    #faceform_ {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transition: .35s all .25s ease;
+
+        .form-group {
+            height: 100%;
+            width: 100%;
+            position: relative;
+            transition: all .25s cubic-bezier(0.39, 0.575, 0.565, 1);
+
+            .form-control {
+                margin: 50px 50px 50px 60px;
+                position: absolute;
+                overflow: hidden;
+                width: calc(100% - 100px);
+
+                label {
+                    line-height: 2.6rem;
+                    font-size: 2rem;
+                    display: block;
+                    width: fit-content;
+                }
+
+                input {
+                    border: none;
+                    background: transparent;
+                    display: block;
+                    font-size: 2.2rem;
+                    outline: none;
+                    position: relative;
+                    margin: 25px 0;
+                    font-weight: 400;
+                    width: 90%;
+                    border-bottom: 1px solid transparent;
+                    transition: border .25s ease;
+
+                    &:focus {
+                        border-bottom: 1px solid #cccccc66;
+                    }
+
+                    &::placeholder {
+                        color: #cccccc66;
+                    }
+                }
+            }
+        }
+    }
+
+    .controls {
+        position: absolute;
+        bottom: 70px;
+        right: 50px;
+
+        button {
+            padding: 6px 17px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-flex;
+            justify-content: center;
+            outline: none;
+            align-items: center;
+            margin: 0 3px;
+            border: none;
+            box-shadow: 0 0 5px rgba(100, 100, 100, .35);
+            transition: all .25s ease;
+
+            &:active {
+                transform: scale(0.9);
+            }
+
+            &.right {
+                span {
+                    display: none;
+                    position: absolute;
+                    will-change: transform;
+                }
+
+                &.go {
+                    svg {
+                        visibility: hidden;
+                    }
+
+                    span {
+                        display: block;
+                    }
+                }
+            }
+        }
+    }
+}

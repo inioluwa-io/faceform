@@ -1,0 +1,25 @@
+.grid {
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+
+    &.grid-20 {
+        grid-gap: 20px;
+    }
+
+    &.grid-col-5 {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+
+    &.grid-col-4 {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+
+@media only screen and (max-width:577px) {
+    .grid {
+        &.grid-20 {
+            grid-gap: 13px;
+        }
+    }
+}
