@@ -1,9 +1,15 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import "../styles/components/form.scss";
 import Icon from "@mdi/react";
 import { mdiChevronLeft, mdiChevronRight, mdiArrowRight } from "@mdi/js";
+import { FormContext } from "../context/formContext";
 
 const Forms: React.FC<any> = ({ items, template }) => {
+  const { form }: any = useContext(FormContext);
+  template = form.template;
+  items = form.form;
+
+
   const [page, setPage] = useState(1);
   const animate = useCallback(
     (index: number = 1) => {

@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../styles/components/template.scss";
+import { FormContext } from "../context/formContext";
 
 const Templates: React.FC<any> = ({ templates, selectedTheme = null }) => {
+  const { changeTemplate}: any = useContext(FormContext);
+  
+  const handleChange = (event:any)=> {
+    const target = event.target.dataset.id || event.target.parentElement.dataset.id || event.target.parentElement.parentElement.dataset.id ;
+    changeTemplate(templates[target]);
+  }
+
   return (
     <div className="templates">
       <header>
@@ -12,7 +20,7 @@ const Templates: React.FC<any> = ({ templates, selectedTheme = null }) => {
           {templates.map((template: any, index: number) => (
             <li key={index}>
               <div className="template_container">
-                <button
+                <button data-id = {index} onClick = {handleChange}
                   style={
                     template.theme.type === "plain"
                       ? {
@@ -22,7 +30,7 @@ const Templates: React.FC<any> = ({ templates, selectedTheme = null }) => {
                       : {
                           backgroundImage: `url('../../${template.theme.background}')`,
                           color: template.theme.text,
-                          backgroundSize:"cover",
+                          backgroundSize: "cover",
                           backgroundRepeat: "no-repeat",
                           backgroundPosition: "center"
                         }

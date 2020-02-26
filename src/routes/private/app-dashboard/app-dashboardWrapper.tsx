@@ -1,15 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Icon from "@mdi/react";
 import { mdiPlus, mdiDeleteOutline } from "@mdi/js";
 import "./style.scss";
+import { FormContext } from "../../../context/formContext";
 
 const AppDashboardWrapper: React.FC<any> = ({ items }) => {
-  const [formData, setFormData] = useState(items);
+  const { form, saveForm }: any = useContext(FormContext);
+  const [formData, setFormData] = useState(form.form);
 
   // Control steps in the page
   useEffect(() => {
-    document.querySelector(".create .form-group")?.classList.add("active");
+    document
+      .querySelectorAll(".create .form-group")[0]
+      ?.classList.add("active");
   }, []);
+
+  // setTimeout(() => {
+  //   saveForm(formData);
+  // }, timeoutValue);
 
   // This shows the current page of form and saves the form
 
@@ -17,20 +25,28 @@ const AppDashboardWrapper: React.FC<any> = ({ items }) => {
     const _temp = [...formData];
     _temp[e.target.dataset.id].label = e.target.value;
     setFormData(_temp);
+    // setTimeoutValue((prevState: number) => prevState + 3000);
   };
 
   const addNewPage = (e: any): void => {
     const _temp = [...formData];
-    const _prevInputData = _temp[e.target.dataset.id];
-    _temp.splice(e.target.dataset.id + 1, 0, { ..._prevInputData });
+    const target: any =
+      e.target.dataset.id ||
+      e.target.parentElement.dataset.id ||
+      e.target.parentElement.parentElement.dataset.id;
+    const _prevInputData = _temp[target];
+    _temp.splice(target + 1, 0, { ..._prevInputData });
     setFormData([..._temp]);
+    // console.log(_temp);
+    saveForm([..._temp]);
   };
 
   const setActive = (e: any): void => {
     const _allContainers: any = document.querySelectorAll(
       ".create .form-group"
     );
-    const _container: HTMLElement = e.target.parentElement.parentElement.parentElement;
+    const _container: HTMLElement =
+      e.target.parentElement.parentElement.parentElement;
     for (let i: number = 0; i < _allContainers.length; i++) {
       _allContainers[i].classList.remove("active");
     }
@@ -42,7 +58,8 @@ const AppDashboardWrapper: React.FC<any> = ({ items }) => {
       const _temp = [...formData];
       console.log(e.target.parentElement.parentElement.dataset.id);
       _temp.splice(e.target.parentElement.parentElement.dataset.id, 1);
-      setFormData([..._temp]);
+      // setFormData([..._temp]);
+      saveForm([..._temp]);
     }
   };
   const getRandomColor = (): string => {
@@ -101,6 +118,15 @@ const AppDashboardWrapper: React.FC<any> = ({ items }) => {
           </div>
         ))}
       </form>
+      <button
+        id="save"
+        onClick={() => {
+          saveForm(formData);
+        }}
+        className="btn btn-sm btn-dark"
+      >
+        Save
+      </button>
     </div>
   );
 };

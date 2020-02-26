@@ -102,7 +102,7 @@ const Workspaces: React.FC<any> = ({ workspaces }) => {
                     <Link to={`publish/${workspace.id}`}>Preview</Link>
                   </li>
                   <li>
-                    <Link to={`publish/${workspace.id}`}>Results</Link>
+                    <Link to={`create/abcdef/result/`}>Results</Link>
                   </li>
                   <li>
                     <button>Delete</button>

@@ -29,6 +29,7 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-fontawesome": "^1.7.1",
+    "react-google-login": "^5.1.1",
     "react-helmet-async": "^1.0.4",
     "react-infinite-scroller": "^1.2.4",
     "react-range": "^1.4.6",

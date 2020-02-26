@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import "./App.scss";
 import Routes from "./routes/";
+import TemplateProvider from "./context/templateContext";
+import FormContext  from "./context/formContext";
 
 const App: React.FC = () => {
   const removeTapHighlight = (e: any) => {
@@ -29,9 +31,13 @@ const App: React.FC = () => {
 
   return (
     <div className="default">
-      <BrowserRouter>
-        <Routes />
-      </BrowserRouter>
+      <TemplateProvider>
+        <FormContext>
+          <BrowserRouter>
+            <Routes />
+          </BrowserRouter>
+        </FormContext>
+      </TemplateProvider>
     </div>
   );
 };
