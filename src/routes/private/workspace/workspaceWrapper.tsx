@@ -1,11 +1,11 @@
 import React from "react";
 import "../../../styles/components/header.scss";
 import "../../../styles/pages/workspace.scss";
-import avatar from "../../../assets/img3.jpg";
 import { Link } from "react-router-dom";
 import Workspaces from "../../../components/workspaces";
 
 const Header: React.FC = () => {
+  const image_url:any = window.localStorage.getItem("image_url");
   return (
     <header className="main-header">
       <div id="logo" className="row">
@@ -20,7 +20,7 @@ const Header: React.FC = () => {
               Logout
             </button>
             <div className="profile-pic">
-              <img src={avatar} alt="avatar" />
+              <img src={image_url} alt="avatar" />
             </div>
           </li>
         </ul>

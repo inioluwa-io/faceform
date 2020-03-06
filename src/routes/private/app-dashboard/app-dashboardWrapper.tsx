@@ -4,9 +4,10 @@ import { mdiPlus, mdiDeleteOutline } from "@mdi/js";
 import "./style.scss";
 import { FormContext } from "../../../context/formContext";
 
-const AppDashboardWrapper: React.FC<any> = ({ items }) => {
+const AppDashboardWrapper: React.FC<any> = ({ items, formId }) => {
   const { form, saveForm }: any = useContext(FormContext);
   const [formData, setFormData] = useState(form.form);
+  const [saving, setSaving] = useState(false);
 
   // Control steps in the page
   useEffect(() => {
@@ -15,17 +16,12 @@ const AppDashboardWrapper: React.FC<any> = ({ items }) => {
       ?.classList.add("active");
   }, []);
 
-  // setTimeout(() => {
-  //   saveForm(formData);
-  // }, timeoutValue);
-
   // This shows the current page of form and saves the form
 
   const setData = (e: any): void => {
     const _temp = [...formData];
     _temp[e.target.dataset.id].label = e.target.value;
     setFormData(_temp);
-    // setTimeoutValue((prevState: number) => prevState + 3000);
   };
 
   const addNewPage = (e: any): void => {
@@ -37,8 +33,7 @@ const AppDashboardWrapper: React.FC<any> = ({ items }) => {
     const _prevInputData = _temp[target];
     _temp.splice(target + 1, 0, { ..._prevInputData });
     setFormData([..._temp]);
-    // console.log(_temp);
-    saveForm([..._temp]);
+    saveForm([..._temp], formId);
   };
 
   const setActive = (e: any): void => {
@@ -56,24 +51,22 @@ const AppDashboardWrapper: React.FC<any> = ({ items }) => {
   const deleteNewPage = (e: any): void => {
     if (formData.length > 1) {
       const _temp = [...formData];
-      console.log(e.target.parentElement.parentElement.dataset.id);
       _temp.splice(e.target.parentElement.parentElement.dataset.id, 1);
-      // setFormData([..._temp]);
-      saveForm([..._temp]);
+      saveForm([..._temp], formId);
     }
   };
-  const getRandomColor = (): string => {
-    const _char = "ABCDEF0123456789";
-    let result = "#";
-
-    for (let i = 0; i < 6; i++) {
-      result += _char[Math.floor(Math.random() * _char.length)];
+  const save =  () => {
+    setSaving(true);
+    const res = saveForm(formData, formId);
+    if (!res) {
+      console.warn("Could not save form");
     }
-    return result + "aa";
+    setSaving(false);
   };
 
   return (
     <div className="create">
+      {saving && <h3>Saving</h3>}
       <form>
         {formData.map((item: any, index: number) => (
           <div className="form-group" key={index}>
@@ -118,13 +111,7 @@ const AppDashboardWrapper: React.FC<any> = ({ items }) => {
           </div>
         ))}
       </form>
-      <button
-        id="save"
-        onClick={() => {
-          saveForm(formData);
-        }}
-        className="btn btn-sm btn-dark"
-      >
+      <button id="save" onClick={save} className="btn btn-sm btn-dark">
         Save
       </button>
     </div>

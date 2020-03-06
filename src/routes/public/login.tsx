@@ -1,43 +1,49 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
+import axios from "axios";
 import SEO from "../../components/seo";
-
+import { GoogleLogin } from "react-google-login";
 const LOGIN_URI =
   process.env.NODE_ENV !== "production"
-    ? "http://localhost:8888/login"
+    ? "http://localhost:8888/api/v1/me/login"
     : "https://my-spotify-profile.herokuapp.com:8888/login";
 
 const Login: React.FC<any> = () => {
-  const randomToken = (length: number = 12): string => {
-    let character: string =
-      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let characterLength: number = character.length;
-    let result: string = "";
-    for (let i = 0; i < length; i++) {
-      result += character[Math.floor(Math.random() * (characterLength - 1))];
+  const login = async (response: any) => {
+    const headers = {
+      Authorization: `${response.tokenId}`,
+      "Content-Type": "application/json"
+    };
+    try {
+      const res = await axios({ method: "post", url: LOGIN_URI, headers });
+      localStorage.setItem("access_token", res.data.access_token);
+      localStorage.setItem("name", res.data.name);
+      localStorage.setItem("image_url", res.data.image_url);
+      window.location.reload();
+    } catch (err) {
+      console.warn(err.message);
     }
-    return result;
   };
-
-  const login = async () => {
-    window.location.href = LOGIN_URI;
-    // await window.localStorage.setItem("loginToken", token);
-    return <Redirect to={{ pathname: "/" }} />;
+  const handleError = (res: any): void => {
+    console.log(res);
   };
 
   return (
     <section id="login" className="page-container">
       <SEO
-        title="Log in | Spotify profile "
+        title="Log in | Faceform"
         description="Log in to your spotidy profile"
       />
       <div id="logo">
-        <p>Spotify</p>
-        <span>profile</span>
+        <h1>Spotify</h1>
       </div>
-      <button className="btn btn-rounded btn-lg btn-primary" onClick={login}>
-        Log in to Spotify
-      </button>
+      <GoogleLogin
+        redirectUri="http://localhost:8888/login"
+        clientId="723845828891-kp7frfncrraifplnm633b19u6r3t9rro.apps.googleusercontent.com"
+        buttonText="Login with Google"
+        onSuccess={login}
+        onFailure={handleError}
+        cookiePolicy={"single_host_origin"}
+      />
     </section>
   );
 };

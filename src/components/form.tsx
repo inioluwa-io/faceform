@@ -6,7 +6,7 @@ import { FormContext } from "../context/formContext";
 
 const Forms: React.FC<any> = ({ items, template }) => {
   const { form }: any = useContext(FormContext);
-  template = form.template;
+  template = form.template_id;
   items = form.form;
 
 

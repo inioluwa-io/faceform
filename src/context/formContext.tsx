@@ -1,4 +1,5 @@
 import React, { createContext, useState } from "react";
+import { updateForm } from "../utils";
 
 export const FormContext = createContext({});
 
@@ -7,42 +8,21 @@ interface IFormProvider {
 }
 
 const FormProvider = ({ children }: IFormProvider) => {
-
-  const [form, setForm] = useState({
-    id: "djdnjhsdleeauibjeweew",
-    form: [
-      {
-        label: "Ready to start your first survey?",
-        placeholder: "Answer",
-        type: "text"
-      },
-      {
-        label: "You made it!! ",
-        placeholder: "Answer",
-        type: "text"
-      }
-    ],
-    template: {
-      id: "Jn2bf02j9JFJO0JBQBNASHCJnjhd",
-      name: "Blue Pie",
-      theme: {
-        background: "default (1).png",
-        fontFamily: "Nunito Sans",
-        labelColor: "#555",
-        inputColor: "#444",
-        type: "image",
-        buttonColor: "#eeeeee",
-        buttonText: "#555"
-      }
-    }
-  });
+  const [form, setForm]: any = useState(null);
 
   const changeTemplate = async (template: any) => {
-    setForm({ ...form, template: template });
+    setForm({ ...form, template_id: template });
   };
 
-  const saveForm = (formData: any) => {
-    setForm({ ...form, form : formData });
+  const saveForm =  (formData: any, id: string | number) => {
+    setForm({ ...form, form: formData });
+    try {
+      updateForm(form, id);
+      return true;
+    } catch (err) {
+      console.warn(err.message);
+      return false;
+    }
   };
 
   return (

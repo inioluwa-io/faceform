@@ -3,6 +3,7 @@ import "../styles/components/workspace.scss";
 import Icon from "@mdi/react";
 import { mdiPlus, mdiDotsHorizontal } from "@mdi/js";
 import { Link } from "react-router-dom";
+import { addForm, getTemplates, addWorkspace } from "../utils";
 
 const Workspaces: React.FC<any> = ({ workspaces }) => {
   useEffect(() => {
@@ -48,13 +49,37 @@ const Workspaces: React.FC<any> = ({ workspaces }) => {
       current = false;
     };
   }, []);
+
+  const addFaceform = async () => {
+    const template = await getTemplates();
+    const formRes = await addForm({
+      form: [
+        {
+          label: "Ask a question with Faceform",
+          placeholder: "Answer",
+          type: "text"
+        },
+        {
+          label: "Ask more with Faceform",
+          placeholder: "Answer",
+          type: "text"
+        }
+      ],
+      template_id: template.data[0]._id
+    });
+    await addWorkspace({
+      name: template.data[0].name + Math.floor(Math.random() * 100),
+      form_id: formRes.data.data._id
+    });
+    window.location.pathname = `/create/${formRes.data.data._id}`;
+  };
   return (
     <div className="workspaces">
       <div className="container">
         <ul className="workspace">
           <li>
             <div className="workspace_container">
-              <button id="add_new_form">
+              <button id="add_new_form" onClick={addFaceform}>
                 <Icon path={mdiPlus} color="#fff" size={1.5} />
                 <span>New faceform</span>
               </button>
@@ -64,31 +89,33 @@ const Workspaces: React.FC<any> = ({ workspaces }) => {
             <li key={index} className={`idx_${index} idx`}>
               <div className="workspace_container">
                 <Link
-                  to={"create/abcdef/form"}
+                  to={`create/${workspace.form_id._id}/form`}
                   style={
-                    workspace.theme.type === "plain"
+                    workspace.form_id.template_id.theme.type === "plain"
                       ? {
-                          background: workspace.theme.background,
-                          color: workspace.theme.text
+                          background: workspace.form_id.template_id.theme.background,
+                          color: workspace.form_id.template_id.theme.text
                         }
                       : {
-                          backgroundImage: `url('../../${workspace.theme.background}')`,
-                          color: workspace.theme.text,
+                          backgroundImage: `url('../../${workspace.form_id.template_id.theme.background}')`,
+                          color: workspace.form_id.template_id.theme.text,
                           backgroundSize: "cover",
                           backgroundRepeat: "no-repeat",
                           backgroundPosition: "center"
                         }
                   }
                 >
-                  <span style={{ color: workspace.theme.labelColor }}>
+                  <span style={{ color: workspace.form_id.template_id.theme.labelColor }}>
                     {workspace.name}
                   </span>
                 </Link>
                 <div className="template-detail">
                   <div className="detail">
                     <p>
-                      {workspace.response.total} response
-                      {workspace.response.total > 1 ? "s" : ""}
+                      {2} response
+                      {2 > 1 ? "s" : ""}
+                      {/* {workspace.response.total} response
+                      {workspace.response.total > 1 ? "s" : ""} */}
                     </p>
                   </div>
                   <button data-id={index}>
@@ -99,7 +126,7 @@ const Workspaces: React.FC<any> = ({ workspaces }) => {
               <div className="more-options">
                 <ul>
                   <li>
-                    <Link to={`publish/${workspace.id}`}>Preview</Link>
+                    <Link to={`publish/${workspace._id}`}>Preview</Link>
                   </li>
                   <li>
                     <Link to={`create/abcdef/result/`}>Results</Link>

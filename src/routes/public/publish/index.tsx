@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import Forms from "../../../components/form";
+import { FormContext } from "../../../context/formContext";
 
 const formData = {
   form: [
@@ -14,7 +15,7 @@ const formData = {
       type: "text"
     }
   ],
-  template: {
+  template_id: {
     id: "kjf8ueb9hjFJUnx93J",
     name: "Blue Pie",
     theme: {
@@ -30,6 +31,8 @@ const formData = {
 };
 
 const Publish: React.FC<any> = () => {
-  return <Forms items={formData.form} template={formData.template} />;
+  const { setForm, form }: any = useContext(FormContext);
+  
+  return <Forms items={formData.form} template={formData.template_id} />;
 };
 export default Publish;

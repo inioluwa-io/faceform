@@ -9,7 +9,6 @@ import Templates from "../../../components/templates";
 import { Link } from "react-router-dom";
 import Icon from "@mdi/react";
 import { mdiWater } from "@mdi/js";
-import avatar from "../../../assets/img3.jpg";
 
 interface IDashboardWrapper {
   templates: any;
@@ -22,6 +21,7 @@ interface IDashboardWrapper {
 }
 
 const Header: React.FC = () => {
+  const image_url:any = window.localStorage.getItem("image_url");
   return (
     <header className="main-header">
       <div id="logo" className="row">
@@ -47,7 +47,7 @@ const Header: React.FC = () => {
               Logout
             </button>
             <div className="profile-pic">
-              <img src={avatar} alt="avatar" />
+              <img src={image_url} alt="avatar" />
             </div>
           </li>
         </ul>

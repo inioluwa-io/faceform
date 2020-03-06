@@ -1,4 +1,5 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import { getTemplates } from "../utils";
 
 export const TemplateContext = createContext({});
 
@@ -7,8 +8,13 @@ interface ITemplateProvider {
 }
 
 const TemplateProvider = ({ children }: ITemplateProvider) => {
-
-  const [templates, setTemplates] = useState([
+  const [templates, setTemplates]: any = useState(null);
+  useEffect(() => {
+    getTemplates().then(res => {
+      setTemplates(res.data);
+    });
+  }, []);
+  const [template, setTemplate] = useState([
     {
       id: "kjf8sesshjFksJUnx93J",
       name: "Plain Blue",
