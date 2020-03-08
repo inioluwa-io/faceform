@@ -3,6 +3,7 @@ import DashboardWrapper from "./dashboardWrapper";
 import { TemplateContext } from "../../../context/templateContext";
 import { FormContext } from "../../../context/formContext";
 import { getForm } from "../../../utils";
+import SaveProvider from "../../../context/saveContext";
 
 const Dashboard: React.FC<any> = ({ match, ...props }) => {
   const { templates }: any = useContext(TemplateContext);
@@ -29,15 +30,17 @@ const Dashboard: React.FC<any> = ({ match, ...props }) => {
 
   if (!templates || !form) return <>Loading...</>;
   return (
-    <DashboardWrapper
-      formExist={form.hasOwnProperty("_id")}
-      formId={formId}
-      templates={templates}
-      page={page}
-      formData={form}
-      selectedTheme={2}
-      {...props}
-    />
+    <SaveProvider>
+      <DashboardWrapper
+        formExist={form.hasOwnProperty("_id")}
+        formId={formId}
+        templates={templates}
+        page={page}
+        formData={form}
+        selectedTheme={2}
+        {...props}
+      />
+    </SaveProvider>
   );
 };
 export default Dashboard;

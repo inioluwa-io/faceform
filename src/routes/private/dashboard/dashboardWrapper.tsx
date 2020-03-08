@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../../../styles/components/navbar.scss";
 import "../../../styles/components/header.scss";
 import "../../../styles/pages/dashboard.scss";
@@ -9,6 +9,9 @@ import Templates from "../../../components/templates";
 import { Link } from "react-router-dom";
 import Icon from "@mdi/react";
 import { mdiWater } from "@mdi/js";
+import { FormContext } from "../../../context/formContext";
+import { SaveContext } from "../../../context/saveContext";
+import { addPublish } from "../../../utils";
 
 interface IDashboardWrapper {
   templates: any;
@@ -16,12 +19,31 @@ interface IDashboardWrapper {
   formId: string;
   formData: any;
   page: string;
-  selectedTheme?: number | null;
   setForm: Function;
 }
 
-const Header: React.FC = () => {
-  const image_url:any = window.localStorage.getItem("image_url");
+const Header: React.FC<any> = ({ formId }) => {
+  const image_url: any = window.localStorage.getItem("image_url");
+  const publish = async () => {
+    try {
+      const res = await addPublish({ form_id: formId });
+      switch (res.status) {
+        case 200: {
+          alert("Already Published!!!");
+          break;
+        }
+        case 201: {
+          alert("Successfully Published!!!");
+          break;
+        }
+        default:{
+          alert("Try again, something went wrong");
+        }
+      }
+    } catch (e) {
+      console.warn(e.message);
+    }
+  };
   return (
     <header className="main-header">
       <div id="logo" className="row">
@@ -33,9 +55,7 @@ const Header: React.FC = () => {
         <ul className="row">
           <li>
             <button
-              onClick={() => {
-                window.location.pathname = "/publish/3ekke3";
-              }}
+              onClick={publish}
               id="publish-btn"
               className="btn btn-dark btn-sm "
             >
@@ -61,11 +81,11 @@ const DashboardWrapper: React.FC<any> = ({
   formExist,
   formId,
   page,
-  formData,
-  setForm,
-  selectedTheme = null,
-  ...props
+  formData
 }: IDashboardWrapper) => {
+  const { form, saveForm }: any = useContext(FormContext);
+  const { saveStatus, setSaveStatus }: any = useContext(SaveContext);
+
   const Views: React.FC<any> = ({ view }) => {
     switch (view) {
       case "form":
@@ -75,22 +95,33 @@ const DashboardWrapper: React.FC<any> = ({
 
       case "design":
         return (
-          <Templates selectedTheme={selectedTheme} templates={templates} />
+          <Templates selectedTheme={form.template_id} templates={templates} />
         );
 
       case "result":
         return (
-          <Templates selectedTheme={selectedTheme} templates={templates} />
+          <Templates selectedTheme={form.template_id} templates={templates} />
         );
 
       default:
         return <>Not found</>;
     }
   };
+  const save = async () => {
+    try {
+      const res = await saveForm(form.form, formId);
+      if (res.status === 200) {
+        alert("Successfully Saved!!!");
+        setSaveStatus(true);
+      }
+    } catch (e) {
+      console.error(e.message);
+    }
+  };
 
   return (
     <div id="dashboard">
-      <Header />
+      <Header formId={formId} />
       {formExist ? (
         <React.Fragment>
           <Navigation formId={formId} />
@@ -104,6 +135,11 @@ const DashboardWrapper: React.FC<any> = ({
                   Change Theme
                 </Link>
               </React.Fragment>
+            )}
+            {!saveStatus && (
+              <button id="save" onClick={save} className="btn btn-sm btn-dark">
+                Save
+              </button>
             )}
           </div>
         </React.Fragment>

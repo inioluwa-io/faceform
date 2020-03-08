@@ -25,7 +25,7 @@ export const addForm = async (data: any) => {
 };
 export const updateForm = (data: any, id: string | number) => {
   if (typeof _source != typeof undefined) {
-    _source.cancel("Operation canceled due to new request.");
+    _source.cancel("Operation cancelled due to new request.");
     // return ;
   }
   _source = axios.CancelToken.source();
@@ -57,8 +57,26 @@ export const addWorkspace = (data: any) =>
     data
   });
 
+export const addPublish = (data: any) =>
+  axios({
+    method: "post",
+    url: `${ENDPOINT_PREFIX}publish/add`,
+    headers,
+    data
+  });
+
+export const deleteWorkspace = (id: any) =>
+  axios({
+    method: "delete",
+    url: `${ENDPOINT_PREFIX}workspace/delete/${id}`,
+    headers
+  });
+
 export const getTemplates = () =>
   axios.get(`${ENDPOINT_PREFIX}template/`, { headers });
+
+export const getPublish = (id: any) =>
+  axios.get(`${ENDPOINT_PREFIX}publish/${id}`, { headers });
 
 export const getWorkspaces = () =>
   axios.get(`${ENDPOINT_PREFIX}me/workspace`, { headers });

@@ -17,11 +17,9 @@ const FormProvider = ({ children }: IFormProvider) => {
   const saveForm =  (formData: any, id: string | number) => {
     setForm({ ...form, form: formData });
     try {
-      updateForm(form, id);
-      return true;
+      return updateForm(form, id);
     } catch (err) {
       console.warn(err.message);
-      return false;
     }
   };
 

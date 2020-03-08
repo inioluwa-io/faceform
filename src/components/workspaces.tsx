@@ -3,7 +3,7 @@ import "../styles/components/workspace.scss";
 import Icon from "@mdi/react";
 import { mdiPlus, mdiDotsHorizontal } from "@mdi/js";
 import { Link } from "react-router-dom";
-import { addForm, getTemplates, addWorkspace } from "../utils";
+import { addForm, getTemplates, addWorkspace, deleteWorkspace } from "../utils";
 
 const Workspaces: React.FC<any> = ({ workspaces }) => {
   useEffect(() => {
@@ -67,12 +67,19 @@ const Workspaces: React.FC<any> = ({ workspaces }) => {
       ],
       template_id: template.data[0]._id
     });
-    await addWorkspace({
+    addWorkspace({
       name: template.data[0].name + Math.floor(Math.random() * 100),
       form_id: formRes.data.data._id
     });
     window.location.pathname = `/create/${formRes.data.data._id}`;
   };
+
+  const delWorkspace = async (id: string | number) => {
+    console.log(id)
+    await deleteWorkspace(id);
+    window.location.reload();
+  };
+
   return (
     <div className="workspaces">
       <div className="container">
@@ -93,7 +100,8 @@ const Workspaces: React.FC<any> = ({ workspaces }) => {
                   style={
                     workspace.form_id.template_id.theme.type === "plain"
                       ? {
-                          background: workspace.form_id.template_id.theme.background,
+                          background:
+                            workspace.form_id.template_id.theme.background,
                           color: workspace.form_id.template_id.theme.text
                         }
                       : {
@@ -105,7 +113,11 @@ const Workspaces: React.FC<any> = ({ workspaces }) => {
                         }
                   }
                 >
-                  <span style={{ color: workspace.form_id.template_id.theme.labelColor }}>
+                  <span
+                    style={{
+                      color: workspace.form_id.template_id.theme.labelColor
+                    }}
+                  >
                     {workspace.name}
                   </span>
                 </Link>
@@ -126,13 +138,19 @@ const Workspaces: React.FC<any> = ({ workspaces }) => {
               <div className="more-options">
                 <ul>
                   <li>
-                    <Link to={`publish/${workspace._id}`}>Preview</Link>
+                    <Link to={`publish/${workspace.form_id._id}`}>Preview</Link>
                   </li>
                   <li>
                     <Link to={`create/abcdef/result/`}>Results</Link>
                   </li>
                   <li>
-                    <button>Delete</button>
+                    <button
+                      onClick={() => {
+                        delWorkspace(workspace._id);
+                      }}
+                    >
+                      Delete
+                    </button>
                   </li>
                 </ul>
               </div>

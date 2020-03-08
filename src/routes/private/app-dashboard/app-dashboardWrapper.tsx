@@ -3,11 +3,13 @@ import Icon from "@mdi/react";
 import { mdiPlus, mdiDeleteOutline } from "@mdi/js";
 import "./style.scss";
 import { FormContext } from "../../../context/formContext";
+import { SaveContext } from "../../../context/saveContext";
 
 const AppDashboardWrapper: React.FC<any> = ({ items, formId }) => {
   const { form, saveForm }: any = useContext(FormContext);
+  const { setSaveStatus }: any = useContext(SaveContext);
   const [formData, setFormData] = useState(form.form);
-  const [saving, setSaving] = useState(false);
+  const [inputChange, setinputChange] = useState(false);
 
   // Control steps in the page
   useEffect(() => {
@@ -16,15 +18,16 @@ const AppDashboardWrapper: React.FC<any> = ({ items, formId }) => {
       ?.classList.add("active");
   }, []);
 
-  // This shows the current page of form and saves the form
-
+  // This handles onChange event for each input field
   const setData = (e: any): void => {
+    setinputChange(true);
     const _temp = [...formData];
     _temp[e.target.dataset.id].label = e.target.value;
-    setFormData(_temp);
+    setFormData([..._temp]);
   };
 
   const addNewPage = (e: any): void => {
+    setinputChange(true);
     const _temp = [...formData];
     const target: any =
       e.target.dataset.id ||
@@ -33,7 +36,8 @@ const AppDashboardWrapper: React.FC<any> = ({ items, formId }) => {
     const _prevInputData = _temp[target];
     _temp.splice(target + 1, 0, { ..._prevInputData });
     setFormData([..._temp]);
-    saveForm([..._temp], formId);
+    // console.log(_te)
+    // saveForm([..._temp], formId);
   };
 
   const setActive = (e: any): void => {
@@ -49,24 +53,25 @@ const AppDashboardWrapper: React.FC<any> = ({ items, formId }) => {
   };
 
   const deleteNewPage = (e: any): void => {
+    setSaveStatus(false);
     if (formData.length > 1) {
       const _temp = [...formData];
       _temp.splice(e.target.parentElement.parentElement.dataset.id, 1);
       saveForm([..._temp], formId);
     }
   };
-  const save =  () => {
-    setSaving(true);
-    const res = saveForm(formData, formId);
-    if (!res) {
-      console.warn("Could not save form");
+  const save = () => {
+    try {
+      saveForm(formData, formId);
+      alert("Successfully Saved!!!");
+      setinputChange(false);
+    } catch (e) {
+      console.error(e.message);
     }
-    setSaving(false);
   };
 
   return (
     <div className="create">
-      {saving && <h3>Saving</h3>}
       <form>
         {formData.map((item: any, index: number) => (
           <div className="form-group" key={index}>
@@ -108,12 +113,14 @@ const AppDashboardWrapper: React.FC<any> = ({ items, formId }) => {
             >
               <Icon path={mdiPlus} color="#444" size={0.8} />
             </button>
+            {inputChange && (
+              <button id="save" onClick={save} className="btn btn-sm btn-dark">
+                Save
+              </button>
+            )}
           </div>
         ))}
       </form>
-      <button id="save" onClick={save} className="btn btn-sm btn-dark">
-        Save
-      </button>
     </div>
   );
 };

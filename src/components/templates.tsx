@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
 import "../styles/components/template.scss";
 import { FormContext } from "../context/formContext";
+import { SaveContext } from "../context/saveContext";
 
-const Templates: React.FC<any> = ({ templates}) => {
+const Templates: React.FC<any> = ({ templates, selectedTheme }) => {
   const { changeTemplate }: any = useContext(FormContext);
+  const { setSaveStatus }: any = useContext(SaveContext);
 
   const handleChange = (event: any) => {
     const target =
@@ -11,8 +13,11 @@ const Templates: React.FC<any> = ({ templates}) => {
       event.target.parentElement.dataset.id ||
       event.target.parentElement.parentElement.dataset.id;
     changeTemplate(templates[target]);
+    setSaveStatus(false);
   };
-  
+
+  if (!selectedTheme) return <>Loading...</>;
+
   return (
     <div className="templates">
       <header>
@@ -41,6 +46,23 @@ const Templates: React.FC<any> = ({ templates}) => {
                         }
                   }
                 >
+                  {selectedTheme._id === template._id && (
+                    <span
+                      style={{
+                        background: "#b85ef4",
+                        color: "#fff",
+                        position: "absolute",
+                        right: "9px",
+                        top: "10px",
+                        fontSize: "11px",
+                        borderRadius: "3px",
+                        padding: " 2px 5px"
+                      }}
+                    >
+                      Selected
+                    </span>
+                  )}
+
                   <span style={{ color: template.theme.labelColor }}>
                     Question
                   </span>

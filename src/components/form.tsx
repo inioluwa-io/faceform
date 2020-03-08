@@ -4,11 +4,14 @@ import Icon from "@mdi/react";
 import { mdiChevronLeft, mdiChevronRight, mdiArrowRight } from "@mdi/js";
 import { FormContext } from "../context/formContext";
 
-const Forms: React.FC<any> = ({ items, template }) => {
-  const { form }: any = useContext(FormContext);
-  template = form.template_id;
-  items = form.form;
+interface IForms {
+  env: String;
+}
 
+const Forms: React.FC<any> = ({ env = "development" }: IForms) => {
+  const { form }: any = useContext(FormContext);
+  const template = form.template_id;
+  const items = form.form;
 
   const [page, setPage] = useState(1);
   const animate = useCallback(

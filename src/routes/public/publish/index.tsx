@@ -1,38 +1,33 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Forms from "../../../components/form";
 import { FormContext } from "../../../context/formContext";
+import { getPublish } from "../../../utils";
 
-const formData = {
-  form: [
-    {
-      label: "Ready to start your first survey?",
-      placeholder: "Answer",
-      type: "text"
-    },
-    {
-      label: "You made it!! ",
-      placeholder: "Answer",
-      type: "text"
-    }
-  ],
-  template_id: {
-    id: "kjf8ueb9hjFJUnx93J",
-    name: "Blue Pie",
-    theme: {
-      background: "default.png",
-      fontFamily: "Nunito Sans",
-      labelColor: "#fff",
-      inputColor: "#eeeeee",
-      type: "image",
-      buttonColor: "#eeeeee",
-      buttonText: "#222"
-    }
-  }
-};
-
-const Publish: React.FC<any> = () => {
+const Publish: React.FC<any> = ({ match }) => {
+  const formId = match.params.id;
   const { setForm, form }: any = useContext(FormContext);
-  
-  return <Forms items={formData.form} template={formData.template_id} />;
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let current = true;
+    if (current) {
+      getPublish(formId)
+        .then(res => {
+          setForm(res.data.form_id);
+        })
+        .catch(err => {
+          setError("Faceform does not exist");
+          setForm({});
+        });
+    }
+    return () => {
+      current = false;
+    };
+  }, [formId, setForm]);
+
+  if (!form) return <>Loading...</>;
+  if (error.length > 0) return <>{error}</>;
+  // return <>flf</>;
+  return <Forms env = "production" />;
 };
 export default Publish;
