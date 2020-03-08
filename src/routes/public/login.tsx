@@ -5,7 +5,7 @@ import { GoogleLogin } from "react-google-login";
 const LOGIN_URI =
   process.env.NODE_ENV !== "production"
     ? "http://localhost:8888/api/v1/me/login"
-    : "https://my-spotify-profile.herokuapp.com:8888/login";
+    : "http://faceform:8888/api/v1/me/login";
 
 const Login: React.FC<any> = () => {
   const login = async (response: any) => {
