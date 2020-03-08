@@ -67,7 +67,7 @@ const Workspaces: React.FC<any> = ({ workspaces }) => {
       ],
       template_id: template.data[0]._id
     });
-    addWorkspace({
+    await addWorkspace({
       name: template.data[0].name + Math.floor(Math.random() * 100),
       form_id: formRes.data.data._id
     });
@@ -75,7 +75,6 @@ const Workspaces: React.FC<any> = ({ workspaces }) => {
   };
 
   const delWorkspace = async (id: string | number) => {
-    console.log(id)
     await deleteWorkspace(id);
     window.location.reload();
   };
