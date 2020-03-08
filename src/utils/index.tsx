@@ -8,7 +8,7 @@ const headers = {
 };
 // save the new request for cancellation
 let _source: any = undefined;
-const ENDPOINT_PREFIX = "http://localhost:8888/api/v1/";
+const ENDPOINT_PREFIX = "https://faceform.herokuapp.com/api/v1/";
 
 export const addForm = async (data: any) => {
   if (typeof _source != typeof undefined) {
