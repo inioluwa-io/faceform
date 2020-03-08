@@ -36,13 +36,19 @@ const Header: React.FC<any> = ({ formId }) => {
           alert("Successfully Published!!!");
           break;
         }
-        default:{
+        default: {
           alert("Try again, something went wrong");
         }
       }
     } catch (e) {
       console.warn(e.message);
     }
+  };
+  const logout = (): void => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("name");
+    localStorage.removeItem("image_url");
+    window.location.reload();
   };
   return (
     <header className="main-header">
@@ -63,7 +69,11 @@ const Header: React.FC<any> = ({ formId }) => {
             </button>
           </li>
           <li>
-            <button id="logout-btn" className="btn btn-default btn-sm ">
+            <button
+              id="logout-btn"
+              className="btn btn-default btn-sm"
+              onClick={logout}
+            >
               Logout
             </button>
             <div className="profile-pic">
