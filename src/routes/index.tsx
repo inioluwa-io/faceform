@@ -2,7 +2,6 @@ import React from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import Dashboard from "./private/dashboard";
 import NotFound from "./public/notfound";
-import AppDashboard from "./private/app-dashboard";
 import Workspace from "./private/workspace";
 import Publish from "./public/publish";
 import Login from "./public/login";
