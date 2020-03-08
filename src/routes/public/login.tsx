@@ -37,7 +37,7 @@ const Login: React.FC<any> = () => {
         <h1>Spotify</h1>
       </div>
       <GoogleLogin
-        redirectUri="http://localhost:8888/login"
+        redirectUri="https://faceform.netlify.com/login"
         clientId="723845828891-kp7frfncrraifplnm633b19u6r3t9rro.apps.googleusercontent.com"
         buttonText="Login with Google"
         onSuccess={login}
