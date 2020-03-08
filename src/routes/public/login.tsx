@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import SEO from "../../components/seo";
+import "../../styles/pages/login.scss";
 import { GoogleLogin } from "react-google-login";
 const LOGIN_URI =
   process.env.NODE_ENV !== "production"
@@ -34,7 +35,7 @@ const Login: React.FC<any> = () => {
         description="Log in to your spotidy profile"
       />
       <div id="logo">
-        <h1>Spotify</h1>
+        <h1>Faceform</h1>
       </div>
       <GoogleLogin
         redirectUri="https://faceform.netlify.com/login"

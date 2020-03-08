@@ -1,0 +1,12 @@
+#login{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    #logo{
+        margin-bottom: 30px;
+        color: #444;
+    }
+}
