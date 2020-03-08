@@ -5,7 +5,13 @@ import { Link } from "react-router-dom";
 import Workspaces from "../../../components/workspaces";
 
 const Header: React.FC = () => {
-  const image_url:any = window.localStorage.getItem("image_url");
+  const logout = (): void => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("name");
+    localStorage.removeItem("image_url");
+    window.location.reload();
+  };
+  const image_url: any = window.localStorage.getItem("image_url");
   return (
     <header className="main-header">
       <div id="logo" className="row">
@@ -16,7 +22,11 @@ const Header: React.FC = () => {
       <div className="usr-profile row">
         <ul className="row">
           <li>
-            <button id="logout-btn" className="btn btn-default btn-sm ">
+            <button
+              onClick={logout}
+              id="logout-btn"
+              className="btn btn-default btn-sm "
+            >
               Logout
             </button>
             <div className="profile-pic">
