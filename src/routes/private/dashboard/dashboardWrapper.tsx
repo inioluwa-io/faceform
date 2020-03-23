@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "../../../styles/components/navbar.scss";
 import "../../../styles/components/header.scss";
 import "../../../styles/pages/dashboard.scss";
@@ -12,17 +12,20 @@ import { mdiWater } from "@mdi/js";
 import { FormContext } from "../../../context/formContext";
 import { SaveContext } from "../../../context/saveContext";
 import { addPublish } from "../../../utils";
+import NotFound from "../../public/notfound";
+import Results from "../results";
 
 interface IDashboardWrapper {
   templates: any;
   formExist: boolean;
   formId: string;
+  resultId: string;
   formData: any;
   page: string;
   setForm: Function;
 }
 
-const Header: React.FC<any> = ({ formId }) => {
+const Header: React.FC<any> = ({ formId, savingStatus }) => {
   const image_url: any = window.localStorage.getItem("image_url");
   const publish = async () => {
     try {
@@ -57,6 +60,18 @@ const Header: React.FC<any> = ({ formId }) => {
           <h2>Faceform</h2>
         </Link>
       </div>
+      {savingStatus && (
+        <p
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)"
+          }}
+        >
+          Saving...
+        </p>
+      )}
       <div className="usr-profile row">
         <ul className="row">
           <li>
@@ -90,39 +105,39 @@ const DashboardWrapper: React.FC<any> = ({
   templates,
   formExist,
   formId,
+  resultId,
   page,
   formData
 }: IDashboardWrapper) => {
   const { form, saveForm }: any = useContext(FormContext);
   const { saveStatus, setSaveStatus }: any = useContext(SaveContext);
+  const [savingStatus, setSavingStatus] = useState(false);
+  const supportedViews = ["form", "design", "result"];
 
-  const Views: React.FC<any> = ({ view }) => {
-    switch (view) {
-      case "form":
-        return (
-          <AppDashboard setForm="set" formId={formId} formTemplate={formData} />
-        );
-
-      case "design":
-        return (
-          <Templates selectedTheme={form.template_id} templates={templates} />
-        );
-
-      case "result":
-        return (
-          <Templates selectedTheme={form.template_id} templates={templates} />
-        );
-
-      default:
-        return <>Not found</>;
+  // Determine what to display to user
+  const Views: React.FC<any> = ({ view, resultId }) => {
+    if (view === "form" && !!!resultId) {
+      return (
+        <AppDashboard setForm="set" formId={formId} formTemplate={formData} />
+      );
+    } else if (view === "design" && !!!resultId) {
+      return (
+        <Templates selectedTheme={form.template_id} templates={templates} />
+      );
+    } else if (view === "result") {
+      return <Results formId={formId} resultId={resultId} />;
+    } else {
+      return <>Not Found</>;
     }
   };
   const save = async () => {
+    setSavingStatus(true);
     try {
       const res = await saveForm(form.form, formId);
       if (res.status === 200) {
         alert("Successfully Saved!!!");
         setSaveStatus(true);
+        setSavingStatus(false);
       }
     } catch (e) {
       console.error(e.message);
@@ -131,31 +146,43 @@ const DashboardWrapper: React.FC<any> = ({
 
   return (
     <div id="dashboard">
-      <Header formId={formId} />
-      {formExist ? (
-        <React.Fragment>
-          <Navigation formId={formId} />
+      <Header formId={formId} savingStatus={savingStatus} />
+      {/* Redirect to not found if page not supported */}
+      {supportedViews.includes(page) ? (
+        // Redirect to no access if form access denied
+        formExist ? (
+          <React.Fragment>
+            <Navigation formId={formId} />
+            <div id="template-list">
+              <Views view={page} resultId={resultId} />
+              {page !== "result" && !!!resultId && (
+                <React.Fragment>
+                  <Forms items={formData.form} template={formData.template} />
+                  <Link id="change_theme" to={`/create/${formId}/design`}>
+                    <Icon path={mdiWater} size={0.7} color="#444" />
+                    Change Theme
+                  </Link>
+                </React.Fragment>
+              )}
+              {!saveStatus && (
+                <button
+                  id="save"
+                  onClick={save}
+                  className="btn btn-sm btn-dark"
+                >
+                  Save
+                </button>
+              )}
+            </div>
+          </React.Fragment>
+        ) : (
           <div id="template-list">
-            <Views view={page} />
-            {page !== "result" && (
-              <React.Fragment>
-                <Forms items={formData.form} template={formData.template} />
-                <Link id="change_theme" to={`/create/${formId}/design`}>
-                  <Icon path={mdiWater} size={0.7} color="#444" />
-                  Change Theme
-                </Link>
-              </React.Fragment>
-            )}
-            {!saveStatus && (
-              <button id="save" onClick={save} className="btn btn-sm btn-dark">
-                Save
-              </button>
-            )}
+            <h2>No Access</h2>
           </div>
-        </React.Fragment>
+        )
       ) : (
         <div id="template-list">
-          <h2>No Access</h2>
+          <NotFound />
         </div>
       )}
     </div>

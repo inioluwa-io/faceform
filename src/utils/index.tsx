@@ -8,7 +8,10 @@ const headers = {
 };
 // save the new request for cancellation
 let _source: any = undefined;
-const ENDPOINT_PREFIX = "https://faceform.herokuapp.com/api/v1/";
+const ENDPOINT_PREFIX =
+  process.env.NODE_ENV !== "production"
+    ? "http://localhost:8888/api/v1/"
+    : "https://faceform.herokuapp.com/api/v1/";
 
 export const addForm = async (data: any) => {
   if (typeof _source != typeof undefined) {
@@ -32,6 +35,20 @@ export const updateForm = (data: any, id: string | number) => {
   return axios({
     method: "put",
     url: `${ENDPOINT_PREFIX}form/update/${id}`,
+    headers,
+    cancelToken: _source.token,
+    data
+  });
+};
+export const updateResult = (data: any, id: string | number) => {
+  if (typeof _source != typeof undefined) {
+    _source.cancel("Operation cancelled due to new request.");
+    // return ;
+  }
+  _source = axios.CancelToken.source();
+  return axios({
+    method: "put",
+    url: `${ENDPOINT_PREFIX}result/update/${id}`,
     headers,
     cancelToken: _source.token,
     data
@@ -65,10 +82,24 @@ export const addPublish = (data: any) =>
     data
   });
 
+export const addResult = (data: any) =>
+  axios({
+    method: "post",
+    url: `${ENDPOINT_PREFIX}result/add`,
+    headers: { "Content-Type": "application/json" },
+    data
+  });
+
 export const deleteWorkspace = (id: any) =>
   axios({
     method: "delete",
     url: `${ENDPOINT_PREFIX}workspace/delete/${id}`,
+    headers
+  });
+export const delResult = (id: any) =>
+  axios({
+    method: "delete",
+    url: `${ENDPOINT_PREFIX}me/results/${id}`,
     headers
   });
 
@@ -80,3 +111,10 @@ export const getPublish = (id: any) =>
 
 export const getWorkspaces = () =>
   axios.get(`${ENDPOINT_PREFIX}me/workspace`, { headers });
+
+export const getResults = (id: any) =>
+  axios.get(`${ENDPOINT_PREFIX}me/results/${id}`, { headers });
+
+export const getSingleResult = (id: any) =>
+  axios.get(`${ENDPOINT_PREFIX}me/result/${id}`, { headers });
+

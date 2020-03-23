@@ -1,11 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/components/workspace.scss";
 import Icon from "@mdi/react";
 import { mdiPlus, mdiDotsHorizontal } from "@mdi/js";
 import { Link } from "react-router-dom";
 import { addForm, getTemplates, addWorkspace, deleteWorkspace } from "../utils";
+import Loading from "./loading";
 
-const Workspaces: React.FC<any> = ({ workspaces }) => {
+const Workspaces: React.FC<any> = ({ workspaces, setWorkspaces }) => {
+  const [savingStatus, setSavingStatus] = useState(false);
   useEffect(() => {
     let current = true;
     if (current) {
@@ -51,6 +53,7 @@ const Workspaces: React.FC<any> = ({ workspaces }) => {
   }, []);
 
   const addFaceform = async () => {
+    setSavingStatus(true);
     const template = await getTemplates();
     const formRes = await addForm({
       form: [
@@ -72,12 +75,22 @@ const Workspaces: React.FC<any> = ({ workspaces }) => {
       form_id: formRes.data.data._id
     });
     window.location.pathname = `/create/${formRes.data.data._id}`;
+        
   };
 
-  const delWorkspace = async (id: string | number) => {
-    await deleteWorkspace(id);
-    window.location.reload();
+  const delWorkspace = async (id: string | number, arrIndex: number) => {
+    try {
+      await deleteWorkspace(id);
+      const _temp = [...workspaces];
+      _temp.splice(arrIndex, 1);
+      setWorkspaces(_temp);
+      alert("Successfully Deleted!!");
+    } catch (err) {
+      console.warn(err);
+    }
   };
+
+  if (savingStatus) return <Loading />;
 
   return (
     <div className="workspaces">
@@ -123,10 +136,8 @@ const Workspaces: React.FC<any> = ({ workspaces }) => {
                 <div className="template-detail">
                   <div className="detail">
                     <p>
-                      {2} response
-                      {2 > 1 ? "s" : ""}
-                      {/* {workspace.response.total} response
-                      {workspace.response.total > 1 ? "s" : ""} */}
+                      {+workspace.response} response
+                      {+workspace.response > 1 ? "s" : ""}
                     </p>
                   </div>
                   <button data-id={index}>
@@ -140,12 +151,14 @@ const Workspaces: React.FC<any> = ({ workspaces }) => {
                     <Link to={`publish/${workspace.form_id._id}`}>Preview</Link>
                   </li>
                   <li>
-                    <Link to={`create/abcdef/result/`}>Results</Link>
+                    <Link to={`create/${workspace.form_id._id}/result/`}>
+                      Results
+                    </Link>
                   </li>
                   <li>
                     <button
                       onClick={() => {
-                        delWorkspace(workspace._id);
+                        delWorkspace(workspace._id, index);
                       }}
                     >
                       Delete

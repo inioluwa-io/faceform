@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Forms from "../../../components/form";
 import { FormContext } from "../../../context/formContext";
 import { getPublish } from "../../../utils";
+import Loading from "../../../components/loading";
 
 const Publish: React.FC<any> = ({ match }) => {
   const formId = match.params.id;
@@ -25,7 +26,7 @@ const Publish: React.FC<any> = ({ match }) => {
     };
   }, [formId, setForm]);
 
-  if (!form) return <>Loading...</>;
+  if (!form) return <Loading/>;
   if (error.length > 0) return <>{error}</>;
   // return <>flf</>;
   return <Forms env = "production" />;

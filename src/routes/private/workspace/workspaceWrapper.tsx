@@ -39,13 +39,13 @@ const Header: React.FC = () => {
   );
 };
 
-const WorkspaceWrapper: React.FC<any> = ({ workspaces }) => {
+const WorkspaceWrapper: React.FC<any> = ({ workspaces, setWorkspaces }) => {
   return (
     <div id="workspace">
       <Header />
       <main>
         <h1>My workspace</h1>
-        <Workspaces workspaces={workspaces} />
+        <Workspaces workspaces={workspaces} setWorkspaces = {setWorkspaces} />
       </main>
     </div>
   );

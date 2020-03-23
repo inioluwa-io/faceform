@@ -3,6 +3,8 @@ import "../styles/components/form.scss";
 import Icon from "@mdi/react";
 import { mdiChevronLeft, mdiChevronRight, mdiArrowRight } from "@mdi/js";
 import { FormContext } from "../context/formContext";
+import { Link } from "react-router-dom";
+import { addResult } from "../utils";
 
 interface IForms {
   env: String;
@@ -14,6 +16,7 @@ const Forms: React.FC<any> = ({ env = "development" }: IForms) => {
   const items = form.form;
 
   const [page, setPage] = useState(1);
+  const [submittedStatus, setSubmittedStatus] = useState(false);
   const animate = useCallback(
     (index: number = 1) => {
       const form: any = document.querySelector("#faceform_");
@@ -42,6 +45,34 @@ const Forms: React.FC<any> = ({ env = "development" }: IForms) => {
       setPage(page + 1);
       animate(page + 1);
     }
+    if (page === items.length && env === "production") {
+      addResult({
+        items: getData(),
+        form_id: form._id,
+        user_id: form.user_id._id
+      })
+        .then((res: any) => {
+          setSubmittedStatus(true);
+          console.log(res);
+        })
+        .catch((err: any) => {
+          console.warn(err);
+        });
+    }
+  };
+  const getData = (): any => {
+    const formData = form.form;
+    const length = formData.length;
+    const inputs: any = document.querySelectorAll(".form-control input");
+    let data = [];
+    for (let i = 0; i < length; i++) {
+      data.push({
+        question: formData[i].label,
+        answer: inputs[i].value,
+        type: formData[i].type
+      });
+    }
+    return data;
   };
 
   const back = () => {
@@ -51,6 +82,46 @@ const Forms: React.FC<any> = ({ env = "development" }: IForms) => {
     }
   };
 
+  if (submittedStatus) {
+    return (
+      <div
+        id="faceform_container"
+        style={
+          template.theme.type !== "image"
+            ? {
+                background: template.theme.background
+              }
+            : {
+                backgroundImage: `url('../../${template.theme.background}')`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+                backgroundPosition: "center"
+              }
+        }
+      >
+        <div className="_message">
+          <h1
+            style={{
+              color: template.theme.labelColor
+            }}
+          >
+            Your form has been submitted.
+          </h1>
+          <p
+            style={{
+              color: template.theme.labelColor
+            }}
+          >
+            Thank you for using faceform.
+          </p>
+        </div>
+
+        <Link to="/" style={{ color: "#fff" }} className="badge">
+          Powered by <strong>Faceform</strong>
+        </Link>
+      </div>
+    );
+  }
   return (
     <div
       id="faceform_container"
@@ -82,7 +153,13 @@ const Forms: React.FC<any> = ({ env = "development" }: IForms) => {
             color={template.theme.labelColor}
           />
         </div>
-        <form id="faceform_">
+        <form
+          id="faceform_"
+          onSubmit={e => {
+            e.preventDefault();
+            next();
+          }}
+        >
           {items.map((item: any, index: number) => (
             <div className="form-group" key={index}>
               <div className="form-control" key={index}>
@@ -138,9 +215,9 @@ const Forms: React.FC<any> = ({ env = "development" }: IForms) => {
           />
         </button>
       </div>
-      <span className="badge">
+      <Link to="/" style={{ color: "#fff" }} className="badge">
         Powered by <strong>Faceform</strong>
-      </span>
+      </Link>
     </div>
   );
 };

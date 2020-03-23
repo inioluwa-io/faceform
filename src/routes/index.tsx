@@ -72,7 +72,6 @@ const Routes: React.FC = () => {
         <Route path="/publish/:id" render={props => <Publish {...props} />} />
 
         {/* Private routes */}
-
         <AuthRoute path="/workspace" component={Workspace} />
 
         <Route
@@ -84,11 +83,8 @@ const Routes: React.FC = () => {
             />
           )}
         />
-        <AuthRoute path="/create/:id/:page" component={Dashboard} />
-        <Route
-          path="/create/:id/:page"
-          render={props => <Dashboard {...props} />}
-        />
+        <AuthRoute exact path={["/create/:id/:page","/create/:id/:page/:result_id"]} component={Dashboard} />
+        
         <Route
           path="/login"
           render={props =>

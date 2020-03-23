@@ -8,6 +8,11 @@ const LOGIN_URI =
     ? "http://localhost:8888/api/v1/me/login"
     : "https://faceform.herokuapp.com/api/v1/me/login";
 
+const REDIRECT_URI =
+  process.env.NODE_ENV !== "production"
+    ? "http://localhost:8030/login"
+    : "https://faceform.netlify.com/login";
+
 const Login: React.FC<any> = () => {
   const login = async (response: any) => {
     const headers = {
@@ -38,7 +43,7 @@ const Login: React.FC<any> = () => {
         <h1>Faceform</h1>
       </div>
       <GoogleLogin
-        redirectUri="https://faceform.netlify.com/login"
+        redirectUri={REDIRECT_URI}
         clientId="723845828891-kp7frfncrraifplnm633b19u6r3t9rro.apps.googleusercontent.com"
         buttonText="Login with Google"
         onSuccess={login}

@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import "../styles/components/template.scss";
 import { FormContext } from "../context/formContext";
 import { SaveContext } from "../context/saveContext";
+import Loading from "./loading";
 
 const Templates: React.FC<any> = ({ templates, selectedTheme }) => {
   const { changeTemplate }: any = useContext(FormContext);
@@ -16,7 +17,7 @@ const Templates: React.FC<any> = ({ templates, selectedTheme }) => {
     setSaveStatus(false);
   };
 
-  if (!selectedTheme) return <>Loading...</>;
+  if (!selectedTheme) return <Loading />;
 
   return (
     <div className="templates">
