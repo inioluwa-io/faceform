@@ -132,6 +132,7 @@
             "workspace workspace"
             "navbar navbar";
         grid-template-columns: 1fr;
+        grid-template-rows: 3.7rem 1fr;
         height: 100%;
         position: relative;
     }
@@ -161,6 +162,22 @@
 
             li {
                 display: flex;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width:768px) {
+    .main-header {
+        height: 3.7rem;
+
+        .usr-profile li {
+            #logout-btn {
+                margin-right: 0px;
+            }
+
+            .profile-pic {
+                display: none;
             }
         }
     }
