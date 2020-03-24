@@ -29,6 +29,6 @@ const Publish: React.FC<any> = ({ match }) => {
   if (!form) return <Loading/>;
   if (error.length > 0) return <>{error}</>;
   // return <>flf</>;
-  return <Forms env = "production" />;
+  return <div id = "publish"><Forms env = "production" /></div>;
 };
 export default Publish;
