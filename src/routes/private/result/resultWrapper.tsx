@@ -38,7 +38,7 @@ const ResultWrapper: React.FC<any> = ({ result }: IResultWrapper) => {
                 {result.items.map((item: any, index: number) => (
                   <li key={index}>
                     <h3>{item.question}</h3>
-                    <p>{firstToUpperCase(item.answer)}</p>
+                    <p>{item.answer ? firstToUpperCase(item.answer) : ""}</p>
                   </li>
                 ))}
               </ul>

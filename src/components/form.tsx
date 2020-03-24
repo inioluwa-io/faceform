@@ -125,6 +125,7 @@ const Forms: React.FC<any> = ({ env = "development" }: IForms) => {
   return (
     <div
       id="faceform_container"
+      className="mobile-hide"
       style={
         template.theme.type !== "image"
           ? {

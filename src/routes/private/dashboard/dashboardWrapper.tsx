@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 import "../../../styles/components/navbar.scss";
 import "../../../styles/components/header.scss";
 import "../../../styles/pages/dashboard.scss";
@@ -113,6 +113,8 @@ const DashboardWrapper: React.FC<any> = ({
   const { saveStatus, setSaveStatus }: any = useContext(SaveContext);
   const [savingStatus, setSavingStatus] = useState(false);
   const supportedViews = ["form", "design", "result"];
+  const formRef: any = useRef();
+  let isPreview = false;
 
   // Determine what to display to user
   const Views: React.FC<any> = ({ view, resultId }) => {
@@ -144,8 +146,37 @@ const DashboardWrapper: React.FC<any> = ({
     }
   };
 
+  // Toggles form preview on mobile
+  const showPreview = (e: any): void => {
+    const preview: HTMLElement = formRef.current.querySelector(
+      "#faceform_container"
+    );
+    const pageToBeHidden: HTMLElement =
+      formRef.current.querySelector("#template-list .create") ||
+      formRef.current.querySelector("#template-list .templates");
+    const nav: HTMLElement = formRef.current.querySelector("nav");
+    if (!isPreview) {
+      
+      e.target.innerHTML = "Close";
+      // Hide other elements
+      pageToBeHidden.classList.add("mobile-hide");
+      nav.classList.add("mobile-hide-md");
+      // Show preview
+      preview.classList.remove("mobile-hide");
+      isPreview = true;
+    } else {
+      e.target.innerHTML = "Preview Form";
+      // Show other elements
+      pageToBeHidden.classList.remove("mobile-hide");
+      nav.classList.remove("mobile-hide-md");
+      // Hide preview
+      preview.classList.add("mobile-hide");
+      isPreview = false;
+    }
+  };
+
   return (
-    <div id="dashboard">
+    <div id="dashboard" ref={formRef}>
       <Header formId={formId} savingStatus={savingStatus} />
       {/* Redirect to not found if page not supported */}
       {supportedViews.includes(page) ? (
@@ -157,6 +188,9 @@ const DashboardWrapper: React.FC<any> = ({
               <Views view={page} resultId={resultId} />
               {page !== "result" && !!!resultId && (
                 <React.Fragment>
+                  <button id="preview" onClick={showPreview}>
+                    Preview Form
+                  </button>
                   <Forms items={formData.form} template={formData.template} />
                   <Link id="change_theme" to={`/create/${formId}/design`}>
                     <Icon path={mdiWater} size={0.7} color="#444" />
