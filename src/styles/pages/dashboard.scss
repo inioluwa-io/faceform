@@ -8,7 +8,7 @@
 
     #change_theme {
         position: absolute;
-        top: 30px;
+        top: 25px;
         right: 50px;
         color: #555;
         padding: 6px 10px;
@@ -43,5 +43,62 @@
     .create {
         border-right: 1px solid#eee;
     }
+}
 
+@media only screen and (max-width:950px) {
+    #template-list {
+        grid-area: workspace;
+        display: grid;
+        grid-template-columns: 1fr;
+        overflow: hidden;
+        position: relative;
+    }
+
+    #dashboard {
+        #change_theme {
+            display: none;
+        }
+    }
+}
+
+@media only screen and (max-width:768px) {
+
+    #dashboard {
+        grid-template-areas:
+            "header header"
+            "workspace workspace"
+            "navbar navbar";
+        grid-template-columns: 1fr;
+        height: 100%;
+        position: relative;
+    }
+
+    nav {
+        grid-area: navbar;
+        border-right: 1px solid #eee;
+        position: fixed;
+        height: 3.5rem;
+        width: 250px;
+        border-radius: 10px;
+        background: #fff;
+        left: 50%;
+        transform: translateX(-50%);
+        box-shadow: 0 1px 7px #22222244;
+        top: auto;
+        bottom: 13px;
+        z-index: 99;
+
+        ul {
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            height: 100%;
+            margin: 0 20px;
+            width: auto;
+
+            li {
+                display: flex;
+            }
+        }
+    }
 }

@@ -45,11 +45,11 @@ header {
             height: 11.2rem;
             margin: 8px;
 
-            &.active{
+            &.active {
                 .more-options {
                     display: block;
                 }
-                
+
             }
 
             .more-options {
@@ -74,13 +74,14 @@ header {
                     margin: 0;
                     transition: all .35s ease;
 
-                    a, button {
+                    a,
+                    button {
                         color: #444;
                         width: 100%;
                         border: none;
                         background: none;
                         text-align: left;
-                        font-family: 'Nunito sans';                    
+                        font-family: 'Nunito sans';
                         cursor: pointer;
                         outline: none;
                         padding: 12px 24px 12px 14px;
@@ -188,5 +189,37 @@ header {
             }
         }
 
+    }
+}
+
+@media only screen and (max-width:616px) {
+    .workspaces {
+        ul.workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-gap: 15px;
+            margin: 0 !important;
+
+            li {
+                width: auto;
+                margin: 0;
+            }
+
+        }
+    }
+
+    #results .workspaces {
+        ul.workspace {
+            margin: 15px !important;
+        }
+    }
+
+}
+
+@media only screen and (max-width:500px) {
+    .workspaces {
+        ul.workspace {
+            grid-template-columns: 1fr 1fr;
+        }
     }
 }

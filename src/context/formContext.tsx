@@ -12,12 +12,13 @@ const FormProvider = ({ children }: IFormProvider) => {
 
   const changeTemplate = async (template: any) => {
     setForm({ ...form, template_id: template });
+    console.log(form);
   };
 
-  const saveForm =  (formData: any, id: string | number) => {
+  const saveForm = (formData: any, id: string | number) => {
     setForm({ ...form, form: formData });
     try {
-      return updateForm(form, id);
+      return updateForm({ ...form, form: formData }, id);
     } catch (err) {
       console.warn(err.message);
     }

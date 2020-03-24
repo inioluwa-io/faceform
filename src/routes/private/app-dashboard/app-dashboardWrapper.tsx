@@ -113,13 +113,13 @@ const AppDashboardWrapper: React.FC<any> = ({ items, formId }) => {
             >
               <Icon path={mdiPlus} color="#444" size={0.8} />
             </button>
-            {inputChange && (
-              <button id="save" onClick={save} className="btn btn-sm btn-dark">
-                Save
-              </button>
-            )}
           </div>
         ))}
+        {inputChange && (
+          <button id="save" onClick={save} className="btn btn-sm btn-dark">
+            Save
+          </button>
+        )}
       </form>
     </div>
   );

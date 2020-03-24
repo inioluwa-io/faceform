@@ -37,7 +37,7 @@ header {
         grid-template-columns: 9.6rem 9.6rem 9.6rem;
         display: flex;
         flex-wrap: wrap;
-        margin-left: -8px;
+        margin-left: 8px !important;
 
         li {
             display: flex;
@@ -134,5 +134,21 @@ header {
             }
         }
 
+    }
+}
+
+@media only screen and (max-width:768px) {
+    .templates .container {
+        padding-bottom: 60px;
+        height: calc(100% - 120px);
+    }
+
+    #save {
+        position: fixed;
+        bottom: auto;
+        top: 4.8rem;
+        left: auto;
+        right: 25px;
+        z-index: 9;
     }
 }

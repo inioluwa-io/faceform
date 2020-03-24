@@ -75,7 +75,6 @@ const Workspaces: React.FC<any> = ({ workspaces, setWorkspaces }) => {
       form_id: formRes.data.data._id
     });
     window.location.pathname = `/create/${formRes.data.data._id}`;
-        
   };
 
   const delWorkspace = async (id: string | number, arrIndex: number) => {
@@ -107,8 +106,8 @@ const Workspaces: React.FC<any> = ({ workspaces, setWorkspaces }) => {
           {workspaces.map((workspace: any, index: number) => (
             <li key={index} className={`idx_${index} idx`}>
               <div className="workspace_container">
-                <Link
-                  to={`create/${workspace.form_id._id}/form`}
+                <a
+                  href={`create/${workspace.form_id._id}/form`}
                   style={
                     workspace.form_id.template_id.theme.type === "plain"
                       ? {
@@ -132,7 +131,7 @@ const Workspaces: React.FC<any> = ({ workspaces, setWorkspaces }) => {
                   >
                     {workspace.name}
                   </span>
-                </Link>
+                </a>
                 <div className="template-detail">
                   <div className="detail">
                     <p>
